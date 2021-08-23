@@ -1,0 +1,302 @@
+<odoo>
+
+    <record id="helpdesk_ticket_form_inherit" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <button string="Validate" type="object" name="action_validate" />
+                <button string="Contactor Approval" class="oe_highlight" type="object" name="action_contractor_approve"  attrs="{'invisible': [('is_contractor_approved', '=', True)]}" groups="helpdesk_customization.group_contractor"/>
+                <button string="Client Approval" class="oe_highlight" type="object" name="action_client_approve"  attrs="{'invisible': [('is_client_approved', '=', True)]}" groups="helpdesk_customization.group_client"/>
+            </xpath>
+
+            <xpath expr="//field[@name='ticket_type_id']" position="after">
+                <field name="ticket_ids" widget="many2many_tags" string="Ticket Type"/>
+                <field name="site_id"/>
+                <field name="is_client_approved" invisible="1"/>
+                <field name="is_contractor_approved" invisible="1"/>
+            </xpath>
+
+            <xpath expr="//field[@name='ticket_type_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='description']" position="after">
+                <notebook>
+                    <page string="Checklist">
+                        <group col="4">
+                            <field name="is_pole"/>
+                            <field name="is_outdoor"/>
+                            <field name="is_battery"/>
+                            <field name="is_civil"/>
+                            <field name="is_optical"/>
+                            <field name="is_attenuation"/>
+                            <field name="is_camera"/>
+                            <field name="is_site"/>
+                            <field name="is_wireless"/>
+                        </group>
+                    </page>
+                    <page string="Parts">
+                        <field name="part_ids">
+                            <tree editable="bottom">
+                                <field name="type"/>
+                                <field name="product_id" domain="[('id', 'in', product_ids)]"/>
+                                <field name="name"/>
+                                <field name="lot_id"/>
+                                <field name="qty"/>
+                                <field name="uom_id"/>
+                                <field name="receive_qty" attrs="{'invisible': [('type', '!=', 'remove')]}"/>
+                                <field name="delivered_qty" attrs="{'invisible': [('type', '!=', 'add')]}"/>
+                                <field name="received_id" invisible="1"/>
+                                <field name="delivered_id" invisible="1"/>
+                                <field name="is_picking_created" invisible="1"/>
+                                <field name="product_ids" widget="many2many_tags" invisible="1"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Operations">
+                        <group col="4">
+                            <field name="location_id"/>
+                            <field name="location_dest_id"/>
+                        </group>
+                    </page>
+                    <page string="Material Installed">
+                        <group col="2">
+                            <group string="CCTV">
+                                <field name="cctv_installed" widget="many2many_tags"/>
+                                <field name="ptz_camera"/>
+                                <field name="contractor_name"/>
+                                <field name="site_contactor"/>
+                            </group>
+
+                            <group string="PTZ Camera">
+                                <field name="no_of_ptz" widget="many2many_tags"/>
+                                <field name="cctv_camera"/>
+                                <field name="ptz_contactor_name"/>
+                                <field name="ptz_site_name"/>
+                            </group>
+
+                            <group string="Fibre Assignment">
+                                <field name="no_of_fibre" widget="many2many_tags"/>
+                                <field name="fibre_info"/>
+                                <field name="fibre_contractor_name"/>
+                                <field name="fibre_site_name"/>
+                            </group>
+
+                            <group string="IP Address">
+                                <field name="ip_address"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Pole and Pole Foundation" attrs="{'invisible': [('is_pole', '=', False)]}">
+                        <field name="pole_lines" >
+                            <tree editable="bottom">
+                                <field name="site_ins"/>
+                                <field name="is_ok"/>
+                                <field name="is_not_ok"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                        <field name="pole_pic" widget="many2many_binary"/>
+                        <group>
+                            <field name="pole_comment"/>
+                        </group>
+                    </page>
+                    <page string="Outdoor Closures" attrs="{'invisible': [('is_outdoor', '=', False)]}">
+                        <field name="outdoor_lines" >
+                            <tree editable="bottom">
+                                <field name="site_ins"/>
+                                <field name="is_ok"/>
+                                <field name="is_not_ok"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                        <field name="outdoor_pic" widget="many2many_binary"/>
+                        <group>
+                            <field name="outdoor_comment"/>
+                        </group>
+                    </page>
+                    <page string="Battery Closures" attrs="{'invisible': [('is_battery', '=', False)]}">
+                        <field name="battery_lines" >
+                            <tree editable="bottom">
+                                <field name="site_ins"/>
+                                <field name="is_ok"/>
+                                <field name="is_not_ok"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                        <field name="battery_pic" widget="many2many_binary"/>
+                        <group>
+                            <field name="battery_comment"/>
+                        </group>
+                    </page>
+                    <page string="Civil and Fiber Network" attrs="{'invisible': [('is_civil', '=', False)]}">
+                        <field name="civil_lines" >
+                            <tree editable="bottom">
+                                <field name="site_ins"/>
+                                <field name="is_ok"/>
+                                <field name="is_not_ok"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                        <field name="civil_pic" widget="many2many_binary"/>
+                        <group>
+                            <field name="civil_comment"/>
+                        </group>
+                    </page>
+                    <page string="Optical Testing: Fiber Optical Length Measurement" attrs="{'invisible': [('is_optical', '=', False)]}">
+                        <field name="fibre_lines">
+                            <tree editable="bottom">
+                                <field name="site_ins"/>
+                                <field name="is_ok"/>
+                                <field name="is_not_ok"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                        <field name="fibre_pic" widget="many2many_binary"/>
+                        <group>
+                            <field name="fibre_comment"/>
+                        </group>
+                    </page>
+                    <page string="Optical Testing: Attenuation Test" attrs="{'invisible': [('is_attenuation', '=', False)]}">
+                        <field name="attenuation_lines">
+                            <tree editable="bottom">
+                                <field name="site_ins"/>
+                                <field name="is_ok"/>
+                                <field name="is_not_ok"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                        <field name="attenuation_pic" widget="many2many_binary"/>
+                        <group>
+                            <field name="attenuation_comment"/>
+                        </group>
+                    </page>
+                    <page string="Cameras" attrs="{'invisible': [('is_camera', '=', False)]}">
+                        <field name="camera_lines">
+                            <tree editable="bottom">
+                                <field name="site_ins"/>
+                                <field name="is_ok"/>
+                                <field name="is_not_ok"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                        <field name="camera_pic" widget="many2many_binary"/>
+                        <group>
+                            <field name="camera_comment"/>
+                        </group>
+                    </page>
+                    <page string="Site Power" attrs="{'invisible': [('is_site', '=', False)]}">
+                        <field name="site_lines">
+                            <tree editable="bottom">
+                                <field name="site_ins"/>
+                                <field name="is_ok"/>
+                                <field name="is_not_ok"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                        <field name="site_pic" widget="many2many_binary"/>
+                        <group>
+                            <field name="site_comment"/>
+                        </group>
+                    </page>
+                    <page string="Wireless System" attrs="{'invisible': [('is_wireless', '=', False)]}">
+                        <field name="wireless_lines">
+                            <tree editable="bottom">
+                                <field name="site_ins"/>
+                                <field name="is_ok"/>
+                                <field name="is_not_ok"/>
+                                <field name="remarks"/>
+                            </tree>
+                        </field>
+                        <field name="wireless_pic" widget="many2many_binary"/>
+                        <group>
+                            <field name="wireless_comment"/>
+                        </group>
+                    </page>
+
+                </notebook>
+            </xpath>
+
+        </field>
+    </record>
+
+    <menuitem id="helpdesk.helpdesk_ticket_type_menu" action="helpdesk.helpdesk_ticket_type_action"
+              sequence="1" parent="helpdesk.helpdesk_menu_config" name="Alarm Type"/>
+
+    <record id="helpdesk.helpdesk_ticket_type_action" model="ir.actions.act_window">
+        <field name="name">Alarm Type</field>
+        <field name="res_model">helpdesk.ticket.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No types found. Let's create one!
+            </p><p>
+            Types are perfect to categorize your tickets.
+        </p>
+        </field>
+    </record>
+
+    <record id="view_alarm_type_form" model="ir.ui.view">
+        <field name="name">alarm.type.form</field>
+        <field name="model">alarm.type</field>
+        <field name="arch" type="xml">
+            <form string="Alarm Type">
+                <sheet>
+                    <group col="4">
+                        <field name="name"/>
+                        <field name="alarm_ids" widget="many2many_tags" string="Alarm Types"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_alarm_type_tree" model="ir.ui.view">
+        <field name="name">alarm.type.tree</field>
+        <field name="model">alarm.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="alarm_ids" widget="many2many_tags" string="Alarm Types"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_alarm_type_search" model="ir.ui.view">
+        <field name="name">alarm.type.search</field>
+        <field name="model">alarm.type</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_alarm_type_view" model="ir.actions.act_window">
+        <field name="name">Alarm Name</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">alarm.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_alarm_type_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Record Found. Let's Create..........
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_alarm_type"
+              name="Alarm Name"
+              parent="helpdesk.helpdesk_menu_config"
+              action="action_alarm_type_view"
+              sequence="12"/>
+
+</odoo>

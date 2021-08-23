@@ -1,0 +1,250 @@
+<odoo>
+
+    <menuitem
+        id="maintenance.menu_maintenance_cat"
+        name="Site Categories"
+        parent="maintenance.menu_maintenance_configuration"
+        action="maintenance.hr_equipment_category_action"
+        sequence="2"/>
+
+    <menuitem
+        id="maintenance.menu_equipment_form"
+        name="Sites"
+        parent="maintenance.menu_maintenance_title"
+        action="maintenance.hr_equipment_action"
+        groups="maintenance.group_equipment_manager,base.group_user"
+        sequence="2"/>
+
+    <record id="maintenance.hr_equipment_action" model="ir.actions.act_window">
+        <field name="name">Sites</field>
+        <field name="res_model">maintenance.equipment</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" ref="maintenance.hr_equipment_view_kanban"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new equipment
+            </p><p>
+                Track equipments and link it to an employee or department.
+                You will be able to manage allocations, issues and maintenance of your equipment.
+            </p>
+        </field>
+    </record>
+
+    <record id="maintenance_equipment_form_inherit" model="ir.ui.view">
+        <field name="name">maintenance.equipment.form</field>
+        <field name="model">maintenance.equipment</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='maintenance_team_id']" position="before">
+                <field name="site_assigned_to"/>
+            </xpath>
+            <xpath expr="//field[@name='maintenance_team_id']" position="after">
+                <field name="site_no"/>
+            </xpath>
+
+            <xpath expr="//field[@name='category_id']" position="before">
+                <field name="site_type_id"/>
+            </xpath>
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="site_code"/>
+<!--                <field name="region"/>-->
+<!--                <field name="location"/>-->
+<!--                <field name="city"/>-->
+                <field name="longitude"/>
+                <field name="latitude"/>
+            </xpath>
+
+            <xpath expr="//field[@name='category_id']" position="attributes">
+                <attribute name="string">Site Category</attribute>
+            </xpath>
+
+            <xpath expr="//div[@class='oe_title']" position="replace">
+                <div class="oe_title">
+                        <label for="name" string="Site Name" class="oe_edit_only"/>
+                        <h1><field name="name" string="Name" placeholder="Site Name"/></h1>
+                    </div>
+            </xpath>
+
+
+            <xpath expr="//page[@name='description']" position="before">
+                <page string="Checklist">
+                    <group col="4">
+                        <field name="is_pole"/>
+                        <field name="is_outdoor"/>
+                        <field name="is_battery"/>
+                        <field name="is_civil"/>
+                        <field name="is_optical"/>
+                        <field name="is_attenuation"/>
+                        <field name="is_camera"/>
+                        <field name="is_site"/>
+                        <field name="is_wireless"/>
+                    </group>
+                </page>
+                <page string="Parts">
+                    <group>
+                        <field name="product_ids" widget="many2many_tags"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//page[@name='maintenance']" position="after">
+                <page string="Material Installed">
+                    <group col="2">
+                        <group string="CCTV">
+                            <field name="cctv_installed" widget="many2many_tags"/>
+                            <field name="ptz_camera"/>
+                            <field name="contractor_name"/>
+                            <field name="site_contactor"/>
+                        </group>
+
+                        <group string="PTZ Camera">
+                            <field name="no_of_ptz" widget="many2many_tags"/>
+                            <field name="cctv_camera"/>
+                            <field name="ptz_contactor_name"/>
+                            <field name="ptz_site_name"/>
+                        </group>
+
+                        <group string="Fibre Assignment">
+                            <field name="no_of_fibre" widget="many2many_tags"/>
+                            <field name="fibre_info"/>
+                            <field name="fibre_contractor_name"/>
+                            <field name="fibre_site_name"/>
+                        </group>
+
+                        <group string="IP Address">
+                            <field name="ip_address"/>
+                        </group>
+                    </group>
+                </page>
+                <page string="Pole and Pole Foundation" attrs="{'invisible': [('is_pole', '=', False)]}">
+                    <field name="pole_lines">
+                        <tree editable="bottom">
+                            <field name="site_ins"/>
+                            <field name="is_ok"/>
+                            <field name="is_not_ok"/>
+                            <field name="remarks"/>
+                        </tree>
+                    </field>
+                    <field name="pole_pic" widget="many2many_binary"/>
+                    <group>
+                        <field name="pole_comment"/>
+                    </group>
+                </page>
+                <page string="Outdoor Closures" attrs="{'invisible': [('is_outdoor', '=', False)]}">
+                    <field name="outdoor_lines">
+                        <tree editable="bottom">
+                            <field name="site_ins"/>
+                            <field name="is_ok"/>
+                            <field name="is_not_ok"/>
+                            <field name="remarks"/>
+                        </tree>
+                    </field>
+                    <field name="outdoor_pic" widget="many2many_binary"/>
+                    <group>
+                        <field name="outdoor_comment"/>
+                    </group>
+                </page>
+                <page string="Battery Closures" attrs="{'invisible': [('is_battery', '=', False)]}">
+                    <field name="battery_lines">
+                        <tree editable="bottom">
+                            <field name="site_ins"/>
+                            <field name="is_ok"/>
+                            <field name="is_not_ok"/>
+                            <field name="remarks"/>
+                        </tree>
+                    </field>
+                    <field name="battery_pic" widget="many2many_binary"/>
+                    <group>
+                        <field name="battery_comment"/>
+                    </group>
+                </page>
+                <page string="Civil and Fiber Network" attrs="{'invisible': [('is_civil', '=', False)]}">
+                    <field name="civil_lines">
+                        <tree editable="bottom">
+                            <field name="site_ins"/>
+                            <field name="is_ok"/>
+                            <field name="is_not_ok"/>
+                            <field name="remarks"/>
+                        </tree>
+                    </field>
+                    <field name="civil_pic" widget="many2many_binary"/>
+                    <group>
+                        <field name="civil_comment"/>
+                    </group>
+                </page>
+                <page string="Optical Testing: Fiber Optical Length Measurement" attrs="{'invisible': [('is_optical', '=', False)]}">
+                    <field name="fibre_lines" >
+                        <tree editable="bottom">
+                            <field name="site_ins"/>
+                            <field name="is_ok"/>
+                            <field name="is_not_ok"/>
+                            <field name="remarks"/>
+                        </tree>
+                    </field>
+                    <field name="fibre_pic" widget="many2many_binary"/>
+                    <group>
+                        <field name="fibre_comment"/>
+                    </group>
+                </page>
+                <page string="Optical Testing: Attenuation Test" attrs="{'invisible': [('is_attenuation', '=', False)]}">
+                    <field name="attenuation_lines">
+                        <tree editable="bottom">
+                            <field name="site_ins"/>
+                            <field name="is_ok"/>
+                            <field name="is_not_ok"/>
+                            <field name="remarks"/>
+                        </tree>
+                    </field>
+                    <field name="attenuation_pic" widget="many2many_binary"/>
+                    <group>
+                        <field name="attenuation_comment"/>
+                    </group>
+                </page>
+                <page string="Cameras" attrs="{'invisible': [('is_camera', '=', False)]}">
+                    <field name="camera_lines" >
+                        <tree editable="bottom">
+                            <field name="site_ins"/>
+                            <field name="is_ok"/>
+                            <field name="is_not_ok"/>
+                            <field name="remarks"/>
+                        </tree>
+                    </field>
+                    <field name="camera_pic" widget="many2many_binary"/>
+                    <group>
+                        <field name="camera_comment"/>
+                    </group>
+                </page>
+                <page string="Site Power" attrs="{'invisible': [('is_site', '=', False)]}">
+                    <field name="site_lines">
+                        <tree  editable="bottom">
+                            <field name="site_ins"/>
+                            <field name="is_ok"/>
+                            <field name="is_not_ok"/>
+                            <field name="remarks"/>
+                        </tree>
+                    </field>
+                    <field name="site_pic" widget="many2many_binary"/>
+                    <group>
+                        <field name="site_comment"/>
+                    </group>
+                </page>
+                <page string="Wireless System" attrs="{'invisible': [('is_wireless', '=', False)]}">
+                    <field name="wireless_lines">
+                        <tree  editable="bottom">
+                            <field name="site_ins"/>
+                            <field name="is_ok"/>
+                            <field name="is_not_ok"/>
+                            <field name="remarks"/>
+                        </tree>
+                    </field>
+                    <field name="wireless_pic" widget="many2many_binary"/>
+                    <group>
+                        <field name="wireless_comment"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
