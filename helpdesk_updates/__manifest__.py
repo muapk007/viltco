@@ -10,6 +10,9 @@
     """,
     'depends': ['helpdesk', 'maintenance'],
     'data': [
+        'security/ir.model.access.csv',
+        'views/city_locations.xml',
         'views/helpdesk_view.xml',
+        # 'views/website_ticket.xml',
     ]
 }
