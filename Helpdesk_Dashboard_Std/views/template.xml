@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="tickets"  name="Tickets">
+        <div class="row block3">
+                               
+                            <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+                                <div class="info-box b1">
+                                    <span class="info-box-icon bg-aqua"><i class="fa fa-users"></i></span>
+
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Newly Opened Tickets</span>
+                                        <span class="info-box-number">15</span>
+                                    </div>
+                                </div>
+                            </div>
+                               
+                               <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+                                <div class="info-box b2">
+                                    <span class="info-box-icon bg-2"><i class="fa fa-users"></i></span>
+
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Closed Tickets</span>
+                                        <span class="info-box-number">25</span>
+                                    </div>
+                                </div>
+                            </div>
+                               
+                               <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+                                <div class="info-box b3">
+                                    <span class="info-box-icon bg-3"><i class="fa fa-users"></i></span>
+
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">On Hold Tickets</span>
+                                        <span class="info-box-number">65</span>
+                                    </div>
+                                </div>
+                            </div>
+                               
+                               <div class="col-xl-3 col-md-6 col-sm-6 col-xs-12">
+                                <div class="info-box b4">
+                                    <span class="info-box-icon bg-4"><i class="fa fa-users"></i></span>
+
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Total Tickets</span>
+                                        <span class="info-box-number">100</span>
+                                    </div>
+                                </div>
+                            </div>
+                           </div>
+    </template>
+</odoo>

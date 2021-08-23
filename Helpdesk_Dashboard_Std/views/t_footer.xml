@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="t_footer" inherit_id="website.layout"  name="Footer">
+        <xpath expr="//footer" position="replace">
+            <footer>
+                 <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <p>Copyright © 2021 TeleNoc</p>
+                        </div>
+                     </div>
+                </div>
+            </footer>
+        </xpath>
+    </template>
+</odoo>
